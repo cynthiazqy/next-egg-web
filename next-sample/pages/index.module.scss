@@ -1,0 +1,12 @@
+.main {
+  padding: 1rem;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+/* Mobile */
+@media (min-width: 360px) and (max-width: 767px) {
+  .main {
+    padding: 0.8rem;
+  }
+}

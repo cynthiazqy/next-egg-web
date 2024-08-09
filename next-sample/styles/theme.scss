@@ -1,0 +1,32 @@
+$primary: #484a4f;
+$success: #00dbad;
+$error: #e42635;
+$black: #333;
+$text: #86868b;
+$gray-dark: #9192a0;
+$gray: #adaeb8;
+$gray-light: #f1f2f5;
+
+@mixin web {
+  @media screen and (min-width: 1300px) and (max-width: 2680px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: 768px) and (max-width: 1299px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media screen and (min-width: 360px) and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin mini {
+  @media screen and (min-width: 336px) and (max-width: 359px) {
+    @content;
+  }
+}

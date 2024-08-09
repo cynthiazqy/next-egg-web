@@ -1,0 +1,11 @@
+{
+  "extends": "@eggjs/tsconfig",
+  "compilerOptions": {
+    "jsx": "react",
+    "declaration": false,
+    "paths": {
+      "@/module/*": ["app/module/*"]
+    },
+    "baseUrl": "."
+  }
+}
