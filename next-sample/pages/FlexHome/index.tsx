@@ -1,36 +1,38 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { useState, useEffect } from 'react'
-import { Button, Tooltip, Carousel, Card, Image, Upload } from 'antd'
-import { UploadOutlined, StarFilled } from '@ant-design/icons'
-import ReactMarkdown from 'react-markdown'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-import axios from 'axios'
-import UploadAndDisplay from './component/UploadAndDisplay'
-import CustomForm from './component/CustomForm'
-import styles from './index.module.scss'
+import { useState, useEffect } from 'react';
+import { Button, Tooltip, Carousel, Card, Image, Upload } from 'antd';
+import { UploadOutlined, StarFilled } from '@ant-design/icons';
+import ReactMarkdown from 'react-markdown';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
+import { axiosInstance } from '@/utils/axiosInstance';
+import UploadAndDisplay from './component/UploadAndDisplay';
+import CustomForm from './component/CustomForm';
+import styles from './index.module.scss';
 import {
 	thousandFormat1,
 	thousandFormat2,
 	switchLetterCase1,
 	switchLetterCase2,
-} from 'utils/algorithm'
-import { log } from 'console'
+} from 'utils/algorithm';
+import { log } from 'console';
+import LoginPage from '../login';
 interface CardItem {
-	id: number
-	cardLabel: string
-	cardVal: string
+	id: number;
+	cardLabel: string;
+	cardVal: string;
 }
 
 interface PageInfoProps {
-	id?: number
-	title: string
-	score: string
-	viewsNum: string
-	para: string
-	subPara1: string
-	subPara2: string
+	id?: number;
+	title: string;
+	score: string;
+	viewsNum: string;
+	para: string;
+	subPara1: string;
+	subPara2: string;
 }
 
 let _recommendList: any[] = [
@@ -48,7 +50,7 @@ let _recommendList: any[] = [
 		startDate: 1694033700000,
 		endDate: 1694465700000,
 	},
-]
+];
 
 const FlexHome = () => {
 	const [pageInfo, setPageInfo] = useState<PageInfoProps>({
@@ -58,13 +60,28 @@ const FlexHome = () => {
 		para: '',
 		subPara1: '',
 		subPara2: '',
-	})
-	const [visible, setVisible] = useState<boolean>(false)
-	const [recommendList, setRecommendList] = useState<any[]>(_recommendList)
+	});
+	const [visible, setVisible] = useState<boolean>(false);
+	const [recommendList, setRecommendList] = useState<any[]>(_recommendList);
 
 	useEffect(() => {
-		getPageInfo()
-	}, [])
+		getPageInfo();
+	}, []);
+
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (!token) return;
+		getUsers();
+	}, []);
+
+	const getUsers = async () => {
+		try {
+			const res = await axiosInstance.get('/api/users');
+			console.log('users-res', res);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	useEffect(() => {
 		// test algorithm
@@ -78,29 +95,29 @@ const FlexHome = () => {
 		// console.info(hh2)
 		// console.timeEnd()
 
-		console.time()
-		const xx1 = switchLetterCase1('123abCD79e')
-		console.info(xx1)
-		console.timeEnd()
+		console.time();
+		const xx1 = switchLetterCase1('123abCD79e');
+		console.info(xx1);
+		console.timeEnd();
 
-		console.time()
-		const xx2 = switchLetterCase2('123abCD79e')
-		console.info(xx2)
-		console.timeEnd()
-	}, [])
+		console.time();
+		const xx2 = switchLetterCase2('123abCD79e');
+		console.info(xx2);
+		console.timeEnd();
+	}, []);
 
 	const getPageInfo = async () => {
-		const { data, status } = await axios.get('/api/getPageInfo')
+		const { data, status } = await axios.get('/api/getPageInfo');
 		if (status === 200) {
-			setPageInfo(data)
+			setPageInfo(data);
 		}
-	}
+	};
 
 	const carouselList: string[] = [
 		'/flexHome/nico.jpg',
 		'/flexHome/messie03.jpeg',
 		'/flexHome/neymar01.jpeg',
-	]
+	];
 	const cardContensList: CardItem[] = [
 		{
 			id: 1,
@@ -132,22 +149,23 @@ const FlexHome = () => {
 			cardLabel: 'Program Length',
 			cardVal: '15 weeks',
 		},
-	]
+	];
 
 	const onShowForm = () => {
-		setVisible(true)
-	}
+		setVisible(true);
+	};
 
-	const { title, score, viewsNum, para, subPara1, subPara2 } = pageInfo ?? {}
+	const { title, score, viewsNum, para, subPara1, subPara2 } = pageInfo ?? {};
 	const customFormProps = {
 		visible,
 		setVisible,
 		recommendList,
 		setRecommendList,
-	}
+	};
 
 	return (
 		<div className={styles.flexHome}>
+			<LoginPage />
 			<div className={styles.banner}>
 				<div className={styles.image}>
 					<img src="/flexHome/messie01.jpeg" alt="" />
@@ -206,7 +224,7 @@ const FlexHome = () => {
 						<div>Start the program</div>
 						<div>On Bootstcamp for free</div>
 						<div>
-							<img src="/flexHome/neymar.jpeg" />
+							<img src="/flexHome/neymar.jpeg" alt="" />
 						</div>
 						<div>
 							<Button type="primary">App Store</Button>
@@ -223,7 +241,7 @@ const FlexHome = () => {
 			<UploadAndDisplay />
 			<CustomForm {...customFormProps} />
 		</div>
-	)
-}
+	);
+};
 
-export default FlexHome
+export default FlexHome;
